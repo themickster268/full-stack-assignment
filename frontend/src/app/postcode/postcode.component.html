@@ -1,0 +1,261 @@
+<div  *ngFor="let postcode of postcodeService.postcode | async">
+  
+  <div class="jumbotron container">
+    <h1>Broadband Data for - {{postcode["postcode_space"] | uppercase }}</h1>
+  </div>
+  <div class="container">
+    <div class="row row-cols-4">
+      <div class="col">
+          <div class="card text-white bg-info mb-3">
+              <div class="card-header">
+                Postcode
+              </div>
+              <div class="card-body">
+                {{postcode["postcode_space"]}}
+              </div>
+          </div>
+      </div>
+      <div class="col">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">
+              Area
+            </div>
+            <div class="card-body">
+              {{postcode["area"]}}
+            </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">
+              % of premises recieving 0-2 Mb/s download speed
+            </div>
+            <div class="card-body">
+              {{postcode["% of premises with 0&lt;2Mbit/s download speed"] }}%
+            </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">
+              % of premises recieving 2-5 Mb/s download speed
+            </div>
+            <div class="card-body">
+              {{postcode["% of premises with 2&lt;5Mbit/s download speed"] }}%
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-cols-4">
+        <div class="col">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                  % of premises recieving 5-10 Mb/s download speed
+                </div>
+                <div class="card-body">
+                  {{postcode["% of premises with 5&lt;10Mbit/s download speed"] }}%
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                  % of premises recieving 10-30 Mb/s download speed
+                </div>
+                <div class="card-body">
+                  {{postcode["% of premises with 10&lt;30Mbit/s download speed"] }}%
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                  % of premises recieving 30-300 Mb/s download speed
+                </div>
+                <div class="card-body">
+                  {{postcode["% of premises with 30&lt;300Mbit/s download speed"]}}%
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                  % of premises recieving over 300 Mb/s download speed
+                </div>
+                <div class="card-body">
+                  {{postcode["% of premises with &gt;=300Mbit/s download speed"]}}%
+                </div>
+            </div>
+        </div>
+        <div class="row row-col-4">
+          <div class="col">
+            <div class="card text-white bg-info mb-3">
+              <div class="card-header">
+                % of premises below the USO
+              </div>
+              <div class="card-body">
+                {{postcode["% of premises below the USO"] | percent}}%
+              </div>
+          </div>
+          </div>
+        </div>
+  </div>
+</div>
+
+  <hr>
+
+  <div class="container justify-content-center ">  
+    <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+    <div class="row">
+        <div class="col ">
+        <h4>Comments</h4>
+          <div ngbDropdown class="d-inline-block " >
+            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Sort Comments</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button  ngbDropdownItem (click)="noSorting()">None</button>
+              <button  ngbDropdownItem (click)="sortComments('high')">Highest - Lowest Rating</button>
+              <button  ngbDropdownItem (click)="sortComments('low')">Lowest - Highest Rating</button>
+              <button  ngbDropdownItem (click)="sortComments('latest')">Latest - Oldest Comments</button>
+              <button  ngbDropdownItem (click)="sortComments('oldest')">Oldest - Latest Comments</button>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="container justify-content-center" *ngFor="let comment of postcodeService.comments | async  | slice: (pageNum-1) * pageSize : pageNum * pageSize">
+    <div class="row">
+      <div class="col">
+        <div class="card bg-light mb-3" *ngIf="!selectedComment || (selectedComment && comment._id !== selectedComment._id)" >
+          <div class="card-header" *ngIf="comment.edited === false">
+              Comment posted by {{ comment.name }} on {{ comment.date}}
+
+              <button class="btn btn-danger" (click)="deleteComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Delete</button> <!--add login guard here -->
+              <button class="btn btn-warning" (click)="editComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Edit</button> <!--add login guard here-->
+          </div>
+          <div class="card-header" *ngIf="comment.edited === true">
+            Comment updated by {{ comment.name }} on {{ comment.date}}
+
+            <button class="btn btn-danger" (click)="deleteComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Delete</button> <!--add login guard here -->
+            <button class="btn btn-warning" (click)="editComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Edit</button> <!--add login guard here-->
+        </div>
+          <div class="card-body">
+              {{comment.comment}}
+          </div>
+          <div class="card-footer">
+              Rating: {{ comment.rating }}
+          </div>
+        </div>
+
+        <form [formGroup]="editCommentForm" (ngSubmit)="saveEditComment()" *ngIf="selectedComment && comment._id === selectedComment._id">
+          <div class="card bg-light mb-3">
+            <div class="card-header form-group ">
+              <input type="text"id="editName"name="editName"
+                formControlName="editName"
+                class="form-control"
+                [ngClass]="{'error': isInvalidEdit('editName') }"
+                >
+                
+            </div>
+  
+            <div class="card-body">
+              <textarea id="editComment" rows="3" name="editComment"
+                    formControlName="editComment"
+                    class="form-control"
+                    [ngClass]="{'error': isInvalidEdit('editComment') }"
+                    ></textarea>
+            </div>
+  
+            <div class="card-footer ">
+              <ngb-rating [(rate)]="editRating" 
+                    formControlName="editRating"
+                    class="form-control"
+                    ></ngb-rating>
+                     <hr>
+                    <pre>Rating: <b>{{editRating}}</b></pre> 
+            </div>
+              <button 
+              *ngIf="!isIncompleteEdit()"
+              type="submit" 
+              class="btn btn-primary"
+              style="float: right;"
+              >
+                  Save Edit
+              </button>
+            </div>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="container justify-content-centre">
+    <div class="row">
+      <div class="col">
+        <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [collectionSize]="(postcodeService.comments | async).length"
+        [boundaryLinks]="true"
+        [maxSize]="5"
+        class="d-flex justify-content-center"
+        ></ngb-pagination>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="container" *ngIf="authService.loggedIn">
+      <div class="row">
+        <div class="col-sm-12">
+            <h4>Please provide a comment on broadband provision at this Postcode</h4>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text"id="name"name="name"
+                    class="form-control"
+                    formControlName="name"
+                    [ngClass]="{'error': isInvalid('name') }"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="comment">Please leave your comment below</label>
+                    <textarea id="comment" rows="3" name="comment"
+                    class="form-control"
+                    formControlName="comment"
+                    [ngClass]="{'error': isInvalid('comment') }"
+                    ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Please provide a rating (10 stars = best)</label>
+                    <ngb-rating [(rate)]="currentRating" 
+                    formControlName="rating"
+                    class="form-control"
+                    ></ngb-rating>
+                    <hr>
+                    <pre>Rating: <b>{{currentRating}}</b></pre>
+                </div>
+                <span *ngIf="isIncomplete()">
+                    You must complete all fields
+                </span>
+                <button 
+                *ngIf="!isIncomplete()"
+                type="submit" 
+                class="btn btn-primary"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="!authService.loggedIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Please login to add a comment</h4>
+        </div>
+    </div>
+</div>
+</div>

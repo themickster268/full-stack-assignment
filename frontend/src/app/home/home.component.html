@@ -1,0 +1,40 @@
+
+<div class="jumbotron container " >
+    <h1>Welcome to the NI Broadband Report 2020</h1>
+    <br>
+    <div class="container justify-content-center">
+        <button 
+        *ngIf="!authService.loggedIn"
+        class="btn btn-outline-info"
+        (click)="authService.login()"
+        >
+            Log In
+        </button>
+
+        <button 
+        *ngIf="authService.loggedIn"
+        class="btn btn-outline-info"
+        (click)="authService.logout()"
+        >
+            Log Out
+        </button>
+    </div>
+    
+</div>
+<div class="container justify-content-center">
+    <p>
+        The data collected is based on the Ofcom Connected Nations report of May 2020.
+    </p>
+    <p>
+        For each postcode, the percentage of premises able to receieve a certain download speed is recorded for each download speed range.
+    </p>
+    <p>
+        The report also includes a ranking of Postcodes in terms of percentage of premises unable to receive the Universial Standard Obligation (10Mb/s download and 1Mb/s upload).
+    </p>
+    <p>
+        The lower the percentage, the higher the number of premises able to receive USO broadband. 
+    </p>
+    <p>
+        Users are welcome to leave a comment about their broadband experience at their postcode.
+    </p>
+</div>

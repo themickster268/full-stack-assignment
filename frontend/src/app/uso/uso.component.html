@@ -1,0 +1,33 @@
+<div class="jumbotron" >
+    <h1>Universial Service Obligation Ranking</h1>
+</div>
+<div class="container justify-content-center">
+    <table class="table table-striped mt-5">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Postcode</th>
+              <th scope="col">Area</th>
+              <th scope="col">% of premises below the USO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let postcode of (postcodeService.postcodes | async |slice: (page-1) * pageSize : page * pageSize); let i = index;">
+                <th scope="row"
+                [routerLink]="['/postcodes', postcode._id]"
+                style="cursor: pointer;">{{ postcode["rank"]}}</th>
+                <th>{{ postcode["postcode_space"]}}</th>
+                <th>{{ postcode["area"]}}</th>
+                <th>{{ postcode["% of premises below the USO"] | pecent}}&</th>
+            </tr>
+        </tbody>
+    </table>
+    <ngb-pagination
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="(postcodeService.postcodes | async).length"
+      [boundaryLinks]="true"
+      [maxSize]="5"
+      class="d-flex justify-content-center"
+      ></ngb-pagination>
+</div>
