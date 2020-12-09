@@ -6,41 +6,41 @@
   <div class="container">
     <div class="row row-cols-4">
       <div class="col">
-          <div class="card text-white bg-info mb-3">
+          <div class="card border-primary  mb-3">
               <div class="card-header">
                 Postcode
               </div>
-              <div class="card-body">
+              <div class="card-body text-primary">
                 {{postcode["postcode_space"]}}
               </div>
           </div>
       </div>
       <div class="col">
-        <div class="card text-white bg-info mb-3">
+        <div class="card border-primary  mb-3">
             <div class="card-header">
               Area
             </div>
-            <div class="card-body">
+            <div class="card-body text-primary">
               {{postcode["area"]}}
             </div>
         </div>
       </div>
       <div class="col">
-        <div class="card text-white bg-info mb-3">
+        <div class="card border-primary  mb-3">
             <div class="card-header">
               % of premises recieving 0-2 Mb/s download speed
             </div>
-            <div class="card-body">
+            <div class="card-body text-primary">
               {{postcode["% of premises with 0&lt;2Mbit/s download speed"] }}%
             </div>
         </div>
       </div>
       <div class="col">
-        <div class="card text-white bg-info mb-3">
+        <div class="card border-primary  mb-3">
             <div class="card-header">
               % of premises recieving 2-5 Mb/s download speed
             </div>
-            <div class="card-body">
+            <div class="card-body text-primary">
               {{postcode["% of premises with 2&lt;5Mbit/s download speed"] }}%
             </div>
         </div>
@@ -48,61 +48,67 @@
     </div>
     <div class="row row-cols-4">
         <div class="col">
-            <div class="card text-white bg-info mb-3">
+            <div class="card border-primary  mb-3">
                 <div class="card-header">
                   % of premises recieving 5-10 Mb/s download speed
                 </div>
-                <div class="card-body">
+                <div class="card-body text-primary">
                   {{postcode["% of premises with 5&lt;10Mbit/s download speed"] }}%
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card text-white bg-info mb-3">
+            <div class="card border-primary  mb-3">
                 <div class="card-header">
                   % of premises recieving 10-30 Mb/s download speed
                 </div>
-                <div class="card-body">
+                <div class="card-body text-primary">
                   {{postcode["% of premises with 10&lt;30Mbit/s download speed"] }}%
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card text-white bg-info mb-3">
+            <div class="card border-primary  mb-3">
                 <div class="card-header">
                   % of premises recieving 30-300 Mb/s download speed
                 </div>
-                <div class="card-body">
+                <div class="card-body text-primary">
                   {{postcode["% of premises with 30&lt;300Mbit/s download speed"]}}%
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card text-white bg-info mb-3">
+            <div class="card border-primary  mb-3">
                 <div class="card-header">
                   % of premises recieving over 300 Mb/s download speed
                 </div>
-                <div class="card-body">
+                <div class="card-body text-primary">
                   {{postcode["% of premises with &gt;=300Mbit/s download speed"]}}%
                 </div>
             </div>
         </div>
-        <div class="row row-col-4">
-          <div class="col">
-            <div class="card text-white bg-info mb-3">
-              <div class="card-header">
-                % of premises below the USO
-              </div>
-              <div class="card-body">
-                {{postcode["% of premises below the USO"] | percent}}%
-              </div>
+        
+    </div>
+    <div class="row row-col-4">
+      <div class="col">
+        <div class="card border-primary  mb-3">
+          <div class="card-header">
+            % of premises below the USO
           </div>
+          <div class="card-body text-primary">
+            {{postcode["% of premises below the USO"] }}%
           </div>
         </div>
-  </div>
+      </div>
+      <div class="col">
+
+      </div>
+      <div class="col"></div>
+      <div class="col"></div>
+    </div>
+  <hr>
 </div>
 
-  <hr>
 
   <div class="container justify-content-center ">  
     <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
@@ -124,18 +130,18 @@
 
   <br>
 
-  <div class="container justify-content-center" *ngFor="let comment of postcodeService.comments | async  | slice: (pageNum-1) * pageSize : pageNum * pageSize">
-    <div class="row">
-      <div class="col">
+  <div class="container justify-content-center" >
+    <div class="row" *ngFor="let comment of postcodeService.comments | async  | slice: (pageNum-1) * pageSize : pageNum * pageSize">
+      <div class="col" >
         <div class="card bg-light mb-3" *ngIf="!selectedComment || (selectedComment && comment._id !== selectedComment._id)" >
           <div class="card-header" *ngIf="comment.edited === false">
-              Comment posted by {{ comment.name }} on {{ comment.date}}
+              Comment posted by <strong>{{ comment.name }}</strong> on {{ comment.date}}
 
               <button class="btn btn-danger" (click)="deleteComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Delete</button> <!--add login guard here -->
               <button class="btn btn-warning" (click)="editComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Edit</button> <!--add login guard here-->
           </div>
           <div class="card-header" *ngIf="comment.edited === true">
-            Comment updated by {{ comment.name }} on {{ comment.date}}
+            Comment updated by <strong>{{ comment.name }}</strong> on {{ comment.date}}
 
             <button class="btn btn-danger" (click)="deleteComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Delete</button> <!--add login guard here -->
             <button class="btn btn-warning" (click)="editComment(comment)" style="float: right;" *ngIf="authService.loggedIn">Edit</button> <!--add login guard here-->
@@ -187,25 +193,18 @@
         </form>
       </div>
     </div>
-    
-  </div>
-
-  <div class="container justify-content-centre">
-    <div class="row">
-      <div class="col">
-        <ngb-pagination
-        [(page)]="page"
+    <ngb-pagination
+        [(page)]="pageNum"
         [pageSize]="pageSize"
         [collectionSize]="(postcodeService.comments | async).length"
+        class="d-flex justify-content-center"
         [boundaryLinks]="true"
         [maxSize]="5"
-        class="d-flex justify-content-center"
         ></ngb-pagination>
-      </div>
-    </div>
-  </div>
 
-  <hr>
+        <hr>
+  </div>
+ 
 
   <div class="container" *ngIf="authService.loggedIn">
       <div class="row">

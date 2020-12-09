@@ -1,4 +1,4 @@
-<div class="jumbotron" >
+<div class="jumbotron container" >
     <h1>Postcode Data</h1>
 </div>
 <div class="container">
@@ -18,7 +18,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Search by Area"
-                [(ngModel)]="searchString"
+                [(ngModel)]="searchString" [ngbTypeahead]="search"
             />
             <div class="input-group-append">
                 <button

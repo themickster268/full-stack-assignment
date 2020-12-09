@@ -13,7 +13,7 @@ import { ToastService} from '../services/toast.service';
 export class PostcodeComponent implements OnInit {
 
   pageNum = 1;
-  pageSize = 10;
+  pageSize = 5;
 
   commentForm;
   currentRating = 0;

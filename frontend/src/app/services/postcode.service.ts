@@ -22,9 +22,9 @@ export class PostcodeService {
   commentsSubject = new Subject();
   comments = this.commentsSubject.asObservable();
 
-  private comment_private_list;
-  commentSubject = new Subject();
-  comment = this.commentSubject.asObservable();
+  // private comment_private_list;
+  // commentSubject = new Subject();
+  // comment = this.commentSubject.asObservable();
 
   postcodeId;
 
@@ -85,6 +85,7 @@ export class PostcodeService {
     return this.http.get(rootURL + `/${p_id}/comments`)
       .subscribe(
         response =>{
+          console.log(response)
           this.comments_private_list = response;
           this.commentsSubject.next(this.comments_private_list);
 
@@ -114,9 +115,9 @@ export class PostcodeService {
     formData.append('rating', comment.rating);
 
     let today = new Date();
-    let todayDate = today.getFullYear() + '-' + 
+    let todayDate = today.getDate() + '-' + 
                     today.getMonth() + '-' +
-                    today.getDate();
+                    today.getFullYear();
     formData.append('date', todayDate);
 
     this.http.post(rootURL + `/${this.postcodeId}/comments`, formData)
@@ -137,9 +138,9 @@ export class PostcodeService {
     formData.append('rating', data.editedRating);
 
     let today = new Date();
-    let todayDate = today.getFullYear() + '-' + 
+    let todayDate = today.getDate() + '-' + 
                     today.getMonth() + '-' +
-                    today.getDate();
+                    today.getFullYear();
     formData.append('date', todayDate);
 
     return this.http.put(rootURL + `/${this.postcodeId}/comments/${c_id}`, formData)

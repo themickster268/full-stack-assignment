@@ -1,7 +1,6 @@
 from flask import Flask, make_response, request, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
-from re import search # for checking substring
 from flask_cors import CORS
 from operator import itemgetter
 from datetime import datetime
@@ -190,12 +189,12 @@ def get_comments(p_id):
                 if "date" in request.form:
                     date = request.form["date"]
                 else:
-                    date = now.strftime("%Y-%m-%d")
+                    date = now.strftime("%e-%m-%Y")
                 new_comment = {
                     "_id" : ObjectId(),
                     'name': request.form['name'],
                     'comment': request.form['comment'],
-                    "date": date, #TODO
+                    "date": date.strip(), #TODO
                     'rating': float(request.form['rating']),
                     "edited": False
                 }
@@ -226,11 +225,11 @@ def edit_postcode_comment(p_id, c_id):
                 if "date" in request.form:
                     date = request.form["date"]
                 else:
-                    date = now.strftime("%Y-%m-%d")
+                    date = now.strftime("%e-%m-%Y")
                 edited_comment = { 
                     "comments.$.name": request.form['name'],
                     "comments.$.comment": request.form['comment'],
-                    "comments.$.date": date, #TODO
+                    "comments.$.date": date.strip(), #TODO
                     "comments.$.rating": float(request.form['rating']),
                     "comments.$.edited" :True
                 }

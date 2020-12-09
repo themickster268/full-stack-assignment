@@ -5,7 +5,7 @@
     <div class="container justify-content-center">
         <button 
         *ngIf="!authService.loggedIn"
-        class="btn btn-outline-info"
+        class="btn btn-outline-primary"
         (click)="authService.login()"
         >
             Log In
@@ -13,7 +13,7 @@
 
         <button 
         *ngIf="authService.loggedIn"
-        class="btn btn-outline-info"
+        class="btn btn-outline-primary"
         (click)="authService.logout()"
         >
             Log Out
@@ -26,7 +26,7 @@
         The data collected is based on the Ofcom Connected Nations report of May 2020.
     </p>
     <p>
-        For each postcode, the percentage of premises able to receieve a certain download speed is recorded for each download speed range.
+        For each postcode, the percentage of premises able to recieve a certain range of download speed, for each download speed range (0-2Mb/s, 2-5Mb/s, 5-10Mb/s, 10-30Mb/s, 30-300Mb/s, over 300Mb/s).
     </p>
     <p>
         The report also includes a ranking of Postcodes in terms of percentage of premises unable to receive the Universial Standard Obligation (10Mb/s download and 1Mb/s upload).
@@ -35,6 +35,6 @@
         The lower the percentage, the higher the number of premises able to receive USO broadband. 
     </p>
     <p>
-        Users are welcome to leave a comment about their broadband experience at their postcode.
+        Users are welcome to leave a comment about braodband provision at their postcode.
     </p>
 </div>
